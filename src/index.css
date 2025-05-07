@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gray: #f8f9fa;
+  --blue: #228be6;
+  --red: #c92a2a;
+}
+
+body,
+button {
+  font-family: 'Comic Relief', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
+  margin: 2rem 3rem 5rem 3rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.player-warning-popup {
+  position: fixed;
+  background-color: var(--red);
+  padding: 1.5em;
+  color: white;
+  border-radius: 15px;
+  /* border: 1px solid #ced4da; */
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.player-warning-popup p {
+  font-size: 1.2rem;
+}
+
+main {
+  padding: 0 5rem;
+}
+
+.board {
+  background-color: var(--gray);
+  border-radius: 15px;
+  border: 1px solid #ced4da;
+  text-align: center;
+  overflow-x: auto;
+  padding: 2rem;
+  margin-bottom: 5rem;
+}
+.board header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+.board h2 {
+  font-size: 2rem;
+}
+.board .lastest-played-cards-number {
+  font-size: 2rem;
+  font-weight: 300;
+}
+.board .next-turn-btn {
+  font-size: 1.2rem;
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+.board .reset-board-btn {
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  color: white;
+  background-color: var(--red);
+}
+
+.player-hand {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  overflow: auto;
+}
+.player-name {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+.cards-list {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 1rem;
+  justify-content: center;
+}
+.card {
+  display: flex;
+  justify-content: space-between;
+  height: 18rem;
+  width: 10rem;
+  border-radius: 15px;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.card .card-number {
+  height: fit-content;
+  font-size: 2rem;
+  padding: 0.1em 0.5em;
+  font-weight: 600;
+  background-color: white;
+  border-radius: 100%;
+}
+
+.card:active,
+.next-turn-btn:active {
+  opacity: 0.7;
+}
