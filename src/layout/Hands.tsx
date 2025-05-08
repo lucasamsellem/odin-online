@@ -1,16 +1,27 @@
 import { useState } from 'react';
 import PlayerHand from '../components/PlayerHand';
-import { CardType } from '../data/fullDeck';
+import {
+  CardType,
+  CurrentTurn,
+  DistributedCards,
+  OnCardsOnBoard,
+  OnPlayerWarning,
+  WasBoardEmpty,
+  OnPlayedCardsThisTurn,
+  LatestPlayedCards,
+  PlayedCardsThisTurn,
+} from '../types/GameProps';
 
 type HandsProps = {
-  currentTurn: number;
-  distributedCards: CardType[][];
-  onCardsOnBoard: React.Dispatch<React.SetStateAction<CardType[]>>;
-  onPlayerWarning: React.Dispatch<React.SetStateAction<string>>;
-  wasBoardEmpty: boolean;
-  onPlayedCardsThisTurn: React.Dispatch<React.SetStateAction<number>>;
-  latestPlayedCards: CardType[] | null;
-  cardsOnBoard: CardType[];
+  cardType: CardType;
+  currentTurn: CurrentTurn;
+  distributedCards: DistributedCards;
+  onCardsOnBoard: OnCardsOnBoard;
+  onPlayerWarning: OnPlayerWarning;
+  wasBoardEmpty: WasBoardEmpty;
+  onPlayedCardsThisTurn: OnPlayedCardsThisTurn;
+  latestPlayedCards: LatestPlayedCards;
+  playedCardsThisTurn: PlayedCardsThisTurn;
 };
 
 function Hands({
@@ -21,7 +32,7 @@ function Hands({
   wasBoardEmpty,
   onPlayedCardsThisTurn,
   latestPlayedCards,
-  cardsOnBoard,
+  playedCardsThisTurn,
 }: HandsProps) {
   const [playersHand, setPlayersHand] =
     useState<CardType[][]>(distributedCards);
@@ -41,7 +52,7 @@ function Hands({
             wasBoardEmpty={wasBoardEmpty}
             onPlayedCardsThisTurn={onPlayedCardsThisTurn}
             latestPlayedCards={latestPlayedCards}
-            cardsOnBoard={cardsOnBoard}
+            playedCardsThisTurn={playedCardsThisTurn}
           />
         </li>
       ))}

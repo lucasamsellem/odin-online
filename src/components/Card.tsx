@@ -1,19 +1,27 @@
-import { CardType } from '../data/fullDeck';
+import { CardType } from '../types/GameProps';
 import { CARD_COLORS } from '../data/gameRules';
 import { checkMatchingCards } from '../utils/checkMatchingCards';
+import {
+  DistributedCards,
+  OnCardsOnBoard,
+  OnPlayedCardsThisTurn,
+  OnPlayersHand,
+  OnPlayerWarning,
+  PlayerNumber,
+  WasBoardEmpty,
+  LatestPlayedCards,
+} from '../types/GameProps';
 
 type CardProps = {
   card: CardType;
-  isOnBoard?: boolean;
-  distributedCards?: CardType[][];
-  playerNumber?: number;
-  onCardsOnBoard?: React.Dispatch<React.SetStateAction<CardType[]>>;
-  onPlayersHand?: React.Dispatch<React.SetStateAction<CardType[][]>>;
-  onPlayerWarning?: React.Dispatch<React.SetStateAction<string>>;
-  wasBoardEmpty?: boolean;
-  onPlayedCardsThisTurn?: React.Dispatch<React.SetStateAction<number>>;
-  latestPlayedCards?: CardType[] | null;
-  cardsOnBoard?: CardType[];
+  distributedCards?: DistributedCards;
+  playerNumber?: PlayerNumber;
+  onCardsOnBoard?: OnCardsOnBoard;
+  onPlayersHand?: OnPlayersHand;
+  onPlayerWarning?: OnPlayerWarning;
+  wasBoardEmpty?: WasBoardEmpty;
+  onPlayedCardsThisTurn?: OnPlayedCardsThisTurn;
+  latestPlayedCards?: LatestPlayedCards;
 };
 
 function Card({
@@ -24,9 +32,9 @@ function Card({
   onPlayersHand,
   onPlayerWarning,
   wasBoardEmpty,
+  // playedCardsThisTurn,
   onPlayedCardsThisTurn,
   latestPlayedCards,
-  cardsOnBoard,
 }: CardProps) {
   const playCard = () => {
     if (
@@ -39,12 +47,6 @@ function Card({
       return onPlayerWarning?.('Missing required data to play card.');
     }
 
-    if (wasBoardEmpty) {
-      return onPlayerWarning?.(
-        'Cannot play more than 1 card if the board was empty.'
-      );
-    }
-
     const playedCard = distributedCards[playerNumber].find(
       ({ id }) => id === card.id
     );
@@ -53,15 +55,23 @@ function Card({
       return onPlayerWarning?.("Card not found in player's hand.");
     }
 
-    const areCardsValid = checkMatchingCards(cardsOnBoard, latestPlayedCards);
-    console.log('areCardsValid', areCardsValid);
+    // 🔥 Vérifie ici avec la carte qu’on veut jouer
+    if (latestPlayedCards) {
+      const isValid = checkMatchingCards([...latestPlayedCards, playedCard]);
+      if (!isValid) {
+        return onPlayerWarning?.(
+          'Invalid card played. Please play a card with the same number or color.'
+        );
+      }
+    }
 
-    if (!areCardsValid) {
+    if (wasBoardEmpty) {
       return onPlayerWarning?.(
-        'Invalid play: cards do not match in number or color.'
+        'Cannot play more than 1 card if the board was empty.'
       );
     }
 
+    // Mise à jour des états
     onPlayedCardsThisTurn?.((prev) => prev + 1);
 
     onPlayersHand((prev) =>
@@ -70,7 +80,7 @@ function Card({
       )
     );
 
-    onCardsOnBoard((prev) => [...prev, { ...playedCard, isOnBoard: true }]);
+    onCardsOnBoard((prev) => [...prev, { ...playedCard }]);
   };
 
   return (

@@ -1,7 +1,8 @@
-import { CardType, shuffledDeck } from '../data/fullDeck';
+import { shuffledDeck } from '../data/fullDeck';
+import { DistributedCards } from '../types/GameProps';
 
 type HeaderProps = {
-  distributedCards: CardType[][];
+  distributedCards: DistributedCards;
 };
 
 function Header({ distributedCards }: HeaderProps) {

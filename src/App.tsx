@@ -2,24 +2,23 @@ import Header from './layout/Header';
 import { distributeCards } from './utils/distributeCards';
 import Board from './layout/Board';
 import { useEffect, useState } from 'react';
-import { CardType } from './data/fullDeck';
+import { CardType } from './types/GameProps';
 import { NUMBER_OF_PLAYERS } from './data/gameRules';
 import Hands from './layout/Hands';
 import PlayerWarningPopup from './components/PlayerWarningPopup';
 
 function App() {
   const [cardsOnBoard, setCardsOnBoard] = useState<CardType[]>([]);
-  // console.log('cardsOnBoard', cardsOnBoard);
-
   const [playedCardsThisTurn, setPlayedCardsThisTurn] = useState<number>(0);
-
   const [wasBoardEmpty, setWasBoardEmpty] = useState(false);
   const [currentTurn, setCurrentTurn] = useState<number>(1);
   const [playerWarning, setPlayerWarning] = useState<string>('');
 
   const distributedCards = distributeCards(NUMBER_OF_PLAYERS);
+
+  const firstCardOnBoard = cardsOnBoard[0];
   const alreadyPlayedOnEmptyBoard =
-    cardsOnBoard?.length === 1 && cardsOnBoard[0].isOnBoard;
+    cardsOnBoard?.length === 1 && firstCardOnBoard;
 
   const latestPlayedCards =
     playedCardsThisTurn === 0 ? null : cardsOnBoard.slice(-playedCardsThisTurn);
@@ -42,7 +41,7 @@ function App() {
           onWasBoardEmpty={setWasBoardEmpty}
           onPlayedCardsThisTurn={setPlayedCardsThisTurn}
           latestPlayedCards={latestPlayedCards}
-          // onPlayerWarning={setPlayerWarning}
+          onPlayerWarning={setPlayerWarning}
         />
         <Hands
           currentTurn={currentTurn}
@@ -52,7 +51,7 @@ function App() {
           wasBoardEmpty={wasBoardEmpty}
           onPlayedCardsThisTurn={setPlayedCardsThisTurn}
           latestPlayedCards={latestPlayedCards}
-          cardsOnBoard={cardsOnBoard}
+          playedCardsThisTurn={playedCardsThisTurn}
         />
       </main>
 

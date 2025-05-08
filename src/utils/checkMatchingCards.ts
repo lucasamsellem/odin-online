@@ -1,20 +1,21 @@
-import { CardType } from '../data/fullDeck';
+import { LatestPlayedCards } from '../types/GameProps';
 
 export function checkMatchingCards(
-  cardsOnBoard: CardType[],
-  latestPlayedCards: CardType[] | null
+  latestPlayedCards: LatestPlayedCards
 ): boolean {
-  // Si pas assez de cartes sur le board ou pas de cartes jouées, on considère qu'il n'y a rien à vérifier
-  if (cardsOnBoard?.length < 2 || !latestPlayedCards) return true;
+  const cards = Array.isArray(latestPlayedCards)
+    ? latestPlayedCards
+    : [latestPlayedCards];
 
-  const [card1, card2] = latestPlayedCards;
+  if (cards.length === 0) return false;
+  if (cards.length === 1) return true;
 
-  if (!card1?.isOnBoard || !card2?.isOnBoard) return true;
+  const firstCard = cards[0];
 
-  const isSameNumber = card1.number === card2.number;
-  const isSameColor = card1.color === card2.color;
+  const allSameNumber = cards.every(
+    (card) => card?.number === firstCard?.number
+  );
+  const allSameColor = cards.every((card) => card?.color === firstCard?.color);
 
-  // console.log('isSameNumber', isSameNumber, 'isSameColor', isSameColor);
-
-  return isSameNumber || isSameColor;
+  return allSameNumber || allSameColor;
 }

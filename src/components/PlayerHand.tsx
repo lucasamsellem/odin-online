@@ -1,19 +1,31 @@
-import { CardType } from '../data/fullDeck';
 import { CARD_COLORS } from '../data/gameRules';
 import Card from './Card';
+import {
+  CurrentTurn,
+  OnPlayersHand,
+  PlayerNumber,
+  Hand,
+  DistributedCards,
+  OnCardsOnBoard,
+  OnPlayerWarning,
+  WasBoardEmpty,
+  OnPlayedCardsThisTurn,
+  LatestPlayedCards,
+  PlayedCardsThisTurn,
+} from '../types/GameProps';
 
 type PlayerHandProps = {
-  currentTurn: number;
-  hand: CardType[];
-  playerNumber: number;
-  distributedCards: CardType[][];
-  onCardsOnBoard: React.Dispatch<React.SetStateAction<CardType[]>>;
-  onPlayersHand: React.Dispatch<React.SetStateAction<CardType[][]>>;
-  onPlayerWarning?: React.Dispatch<React.SetStateAction<string>>;
-  wasBoardEmpty: boolean;
-  onPlayedCardsThisTurn: React.Dispatch<React.SetStateAction<number>>;
-  latestPlayedCards: CardType[] | null;
-  cardsOnBoard: CardType[];
+  currentTurn: CurrentTurn;
+  hand: Hand;
+  playerNumber: PlayerNumber;
+  distributedCards: DistributedCards;
+  onCardsOnBoard: OnCardsOnBoard;
+  onPlayersHand: OnPlayersHand;
+  onPlayerWarning: OnPlayerWarning;
+  wasBoardEmpty: WasBoardEmpty;
+  onPlayedCardsThisTurn: OnPlayedCardsThisTurn;
+  latestPlayedCards: LatestPlayedCards;
+  playedCardsThisTurn: PlayedCardsThisTurn;
 };
 
 function PlayerHand({
@@ -27,8 +39,8 @@ function PlayerHand({
   wasBoardEmpty,
   onPlayedCardsThisTurn,
   latestPlayedCards,
-  cardsOnBoard,
-}: PlayerHandProps) {
+}: // playedCardsThisTurn,
+PlayerHandProps) {
   const isCurrentTurn = currentTurn === playerNumber + 1;
 
   return (
@@ -63,7 +75,7 @@ function PlayerHand({
               wasBoardEmpty={wasBoardEmpty}
               onPlayedCardsThisTurn={onPlayedCardsThisTurn}
               latestPlayedCards={latestPlayedCards}
-              cardsOnBoard={cardsOnBoard}
+              // playedCardsThisTurn={playedCardsThisTurn}
             />
           </li>
         ))}

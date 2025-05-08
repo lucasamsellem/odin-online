@@ -1,6 +1,9 @@
-export const buildCardNumber = (numbers: number[]) => {
-  // Guard clause to ensure at least two numbers are provided
-  const sortedNumbers = Number(numbers.sort((a, b) => b - a).join(''));
+export const buildCardNumber = (numbers: number | number[]) => {
+  const allNumbers = Array.isArray(numbers) ? numbers : [numbers];
 
-  return sortedNumbers;
+  if (allNumbers.length === 0) return;
+
+  if (allNumbers.length === 1) return allNumbers[0];
+
+  return Number(allNumbers.sort((a, b) => b - a).join(''));
 };

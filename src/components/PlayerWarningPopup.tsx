@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { OnPlayerWarning, PlayerWarning } from '../types/GameProps';
 
 type PlayerWarningPopupProps = {
-  playerWarning: string;
-  onPlayerWarning: React.Dispatch<React.SetStateAction<string>>;
+  playerWarning: PlayerWarning;
+  onPlayerWarning: OnPlayerWarning;
 };
 
 function PlayerWarningPopup({

@@ -1,4 +1,4 @@
-import { CardType } from '../data/fullDeck';
+import { CardType } from './types/CardsProps';
 
 export function shuffleDeck(startingDeck: CardType[]) {
   const shuffledDeck = [...startingDeck]; // copie pour ne pas muter l'original

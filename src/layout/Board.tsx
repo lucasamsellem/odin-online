@@ -1,19 +1,29 @@
 import { useEffect, useRef } from 'react';
 import Card from '../components/Card';
-import { CardType } from '../data/fullDeck';
 import { CARD_COLORS, NUMBER_OF_PLAYERS } from '../data/gameRules';
 import { buildCardNumber } from '../utils/buildCardNumber';
+import {
+  CardsOnBoard,
+  CurrentTurn,
+  LatestPlayedCards,
+  OnCardsOnBoard,
+  OnCurrentTurn,
+  OnPlayedCardsThisTurn,
+  OnPlayerWarning,
+  OnWasBoardEmpty,
+  WasBoardEmpty,
+} from '../types/GameProps';
 
 type BoardProps = {
-  cardsOnBoard: CardType[];
-  currentTurn: number;
-  onCurrentTurn: React.Dispatch<React.SetStateAction<number>>;
-  onCardsOnBoard: React.Dispatch<React.SetStateAction<CardType[]>>;
-  wasBoardEmpty: boolean;
-  onWasBoardEmpty: React.Dispatch<React.SetStateAction<boolean>>;
-  latestPlayedCards: CardType[] | null;
-  onPlayedCardsThisTurn: React.Dispatch<React.SetStateAction<number>>;
-  // onPlayerWarning: React.Dispatch<React.SetStateAction<string>>;
+  cardsOnBoard: CardsOnBoard;
+  currentTurn: CurrentTurn;
+  onCurrentTurn: OnCurrentTurn;
+  onCardsOnBoard: OnCardsOnBoard;
+  wasBoardEmpty: WasBoardEmpty;
+  onWasBoardEmpty: OnWasBoardEmpty;
+  latestPlayedCards: LatestPlayedCards;
+  onPlayedCardsThisTurn: OnPlayedCardsThisTurn;
+  onPlayerWarning: OnPlayerWarning;
 };
 
 function Board({
@@ -25,15 +35,25 @@ function Board({
   onWasBoardEmpty,
   latestPlayedCards,
   onPlayedCardsThisTurn,
+  onPlayerWarning,
 }: BoardProps) {
+  const isBoardEmpty = cardsOnBoard.length === 0;
+
+  const latestRoundNumbers = Array.isArray(latestPlayedCards)
+    ? latestPlayedCards?.map((card) => card.number)
+    : cardsOnBoard[0]?.number;
+
   const prevRoundNb = useRef<number | null>(null);
-  const latestRoundNumber = latestPlayedCards?.map((card) => card.number);
 
   useEffect(() => {
-    prevRoundNb.current = latestRoundNumber;
-  }, [latestRoundNumber]);
+    prevRoundNb.current = latestRoundNumbers;
+  }, [latestRoundNumbers]);
 
   const triggerNextTurn = () => {
+    if (isBoardEmpty) {
+      return onPlayerWarning('You must play a card first turn.');
+    }
+
     // Reset played cards count to distinct between turns
     onPlayedCardsThisTurn(0);
 
@@ -56,10 +76,7 @@ function Board({
         <h2>Board</h2>
 
         <span className='lastest-played-cards-number'>
-          {latestRoundNumber
-            ? buildCardNumber(latestRoundNumber)
-            : prevRoundNb.current}{' '}
-          🔥
+          {buildCardNumber(latestRoundNumbers)} 🔥
         </span>
       </header>
 
@@ -75,9 +92,7 @@ function Board({
         onClick={triggerNextTurn}
         className='next-turn-btn'
         style={{
-          backgroundColor: wasBoardEmpty
-            ? CARD_COLORS['red']
-            : CARD_COLORS['blue'],
+          backgroundColor: CARD_COLORS[wasBoardEmpty ? 'red' : 'blue'],
         }}
       >
         &#8594; Next turn
