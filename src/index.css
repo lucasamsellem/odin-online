@@ -103,10 +103,8 @@ main {
   margin-bottom: 1rem;
 }
 .cards-list {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 1rem;
-  justify-content: center;
+  display: flex;
+  gap: 1.5rem;
 }
 .card {
   display: flex;
